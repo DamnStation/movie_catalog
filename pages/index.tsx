@@ -2,8 +2,8 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import Navbar from "./components/_Layout/";
 import Hero from "./components/Hero/";
-import Favorites from "./components/Favorites";
-import Divider from "./components/Divider/Index";
+import Favorites from "./components/Favorites/";
+import Divider from "./components/Divider/";
 const Home: NextPage = () => {
   return (
     <>
