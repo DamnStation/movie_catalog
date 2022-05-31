@@ -9,36 +9,52 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   //function for catch errors
   const catcher = (error: Error) => res.status(400).json({ error });
 
-  // Potential Responses
-  const handleCase: ResponseFuncs = {
-    // RESPONSE FOR GET REQUESTS
-    GET: async (req: NextApiRequest, res: NextApiResponse) => {
-      const { Movie } = await connect(); // connect to database
-      res.json(await Movie.find({}).catch(catcher));
-    },
-    // RESPONSE POST REQUESTS
-    POST: async (req: NextApiRequest, res: NextApiResponse) => {
-      const { Movie } = await connect(); // connect to database
-      res.json(await Movie.create(req.body).catch(catcher));
-    },
-    // RESPONSE PUT REQUESTS
-    PUT: async (req: NextApiRequest, res: NextApiResponse) => {
-      const { Movie } = await connect(); // connect to database
-      res.json(
-        await Movie.findByIdAndUpdate(req.query.id, req.body).catch(catcher)
-      );
-    },
-    // RESPONSE DELETE REQUESTS
-    DELETE: async (req: NextApiRequest, res: NextApiResponse) => {
-      const { Movie } = await connect(); // connect to database
-      res.json(await Movie.findByIdAndDelete(req.query.id).catch(catcher));
-    },
-  };
+  //connect to database
+  const { conn, Movie } = await connect();
 
-  // Check if there is a response for the particular method, if so invoke it, if not response with an error
-  const response = handleCase[method];
-  if (response) response(req, res);
-  else res.status(400).json({ error: "No Response for This Request" });
+  //get the movie id from the url
+  const id = req.query.id as string;
+
+  //get the movie from the database
+  const movie = await Movie.findById(id);
+
+  //if the request method is GET, return the movie
+  if (method === "GET") {
+    res.json(movie);
+  }
+
+  //if the request method is PUT, update the movie
+  if (method === "PUT") {
+    const {
+      title,
+      description,
+      image,
+      year,
+      actors,
+      genre,
+      director,
+      favorite,
+      rating,
+    } = req.body;
+    await Movie.findByIdAndUpdate(id, {
+      title,
+      description,
+      image,
+      year,
+      actors,
+      genre,
+      director,
+      favorite,
+      rating,
+    });
+    res.json({ message: "Movie Updated" });
+  }
+
+  //if the request method is DELETE, delete the movie
+  if (method === "DELETE") {
+    await Movie.findByIdAndDelete(id);
+    res.json({ message: "Movie Deleted" });
+  }
 };
 
 export default handler;

@@ -6,11 +6,15 @@ export interface ResponseFuncs {
   DELETE?: Function;
 }
 
-// Interface to define our Todo model on the frontend
+// Interface to define our Movie model on the frontend
 export interface Movie {
-  _id?: number;
   title: String;
   description: String;
   image: String;
+  year: Number;
+  actors: String;
+  genre: String;
+  director: String;
+  favorite: Boolean;
   rating: Number;
 }

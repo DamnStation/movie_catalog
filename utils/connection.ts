@@ -15,11 +15,11 @@ export const connect = async () => {
   const MovieSchema = new mongoose.Schema({
     title: String,
     description: String,
+    image: String,
     year: Number,
+    actors: String,
     genre: String,
     director: String,
-    actors: String,
-    poster: String,
     favorite: Boolean,
     rating: Number,
   });
