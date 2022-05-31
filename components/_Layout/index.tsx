@@ -11,10 +11,17 @@ const _Layout = ({ children }: Props) => {
       <div className="navbar bg-base-100">
         <div className="flex-1">
           <Link href="/">
-            <a className="btn btn-ghost normal-case text-xl">Movie Catalog</a>
+            <div className="btn btn-ghost normal-case text-xl">
+              Movie Catalog
+            </div>
           </Link>
           <Link href="/search">
-            <a className="btn btn-ghost normal-case text-xl">Search Page</a>
+            <div className="btn btn-ghost normal-case text-xl">Search Page</div>
+          </Link>
+          <Link href="/api/movies">
+            <div className="btn btn-ghost normal-case text-xl">
+              Get All Movie API
+            </div>
           </Link>
         </div>
         <div className="flex-none gap-2">
