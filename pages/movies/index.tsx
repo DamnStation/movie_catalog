@@ -53,7 +53,10 @@ const Movies: NextPage = () => {
         <h1 className="">Movies</h1>
         <div className="flex flex-col items-center justify-center w-full h-full">
           {movies.map((movie) => (
-            <div className="flex flex-col items-center justify-center w-full h-full">
+            <div
+              key={movie._id}
+              className="flex flex-col items-center justify-center w-full h-full"
+            >
               <div className="flex flex-col items-center justify-center w-full h-full">
                 <img src={movie.poster} alt={movie.title} />
                 <div className="text-center text-4xl ">{movie.poster}</div>
