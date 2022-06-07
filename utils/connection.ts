@@ -11,17 +11,27 @@ export const connect = async () => {
     .catch((err) => console.log(err));
   console.log("Mongoose Connection Established");
 
-  // OUR Movie SCHEMA
+  // Movie SCHEMA
   const MovieSchema = new mongoose.Schema({
+    _id: String,
     title: String,
     description: String,
-    image: String,
+    poster: String,
     year: Number,
-    actors: String,
-    genre: String,
-    director: String,
-    favorite: Boolean,
     rating: Number,
+    genre: [
+      {
+        _id: String,
+        name: String,
+        director: String,
+      },
+    ],
+    actors: [
+      {
+        name: String,
+        role: String,
+      },
+    ],
   });
 
   // OUR Movie MODEL

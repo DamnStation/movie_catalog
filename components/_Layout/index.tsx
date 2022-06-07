@@ -15,9 +15,16 @@ const _Layout = ({ children }: Props) => {
               Movie Catalog
             </div>
           </Link>
-          <Link href="/search">
-            <div className="btn btn-ghost normal-case text-xl">Search Page</div>
+          <Link href="/movies">
+            <div className="btn btn-ghost normal-case text-xl">All Movies</div>
           </Link>
+          <Link href="/create_new_movie_form">
+            <div className="btn btn-ghost normal-case text-xl">
+              Create New Movie
+            </div>
+          </Link>
+          <line className="w-full h-1 bg-base-200" />
+          <div className="btn btn-ghost normal-case text-xl">From API/</div>
           <Link href="/api/movies">
             <div className="btn btn-ghost normal-case text-xl">
               Get All Movie API

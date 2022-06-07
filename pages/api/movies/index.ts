@@ -5,21 +5,19 @@ import { ResponseFuncs } from "../../../utils/types";
 type Movie = {
   _id: string;
   title: string;
+  description: string;
+  poster: string;
   year: number;
   rating: number;
-  runtime: number;
-  genre: string;
+  genre: {
+    _id: string;
+    name: string;
+  }[];
   director: string;
-  actors: string;
-  plot: string;
-  poster: string;
-  metascore: number;
-  imdbRating: number;
-  imdbVotes: number;
-  imdbID: string;
-  type: string;
-  response: string;
-  favorite: boolean;
+  actors: {
+    name: string;
+    role: string;
+  }[];
 };
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -35,6 +33,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     GET: async (req: NextApiRequest, res: NextApiResponse) => {
       const { Movie } = await connect(); // connect to database
       res.json(await Movie.find({}).catch(catcher));
+    },
+    // RESPONSE FOR POST REQUESTS
+    POST: async (req: NextApiRequest, res: NextApiResponse) => {
+      const { Movie } = await connect(); // connect to database
+      const newMovie: Movie = req.body;
+      res.json(await Movie.create(newMovie).catch(catcher));
     },
   };
 

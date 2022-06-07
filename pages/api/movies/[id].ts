@@ -2,6 +2,24 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { connect } from "../../../utils/connection";
 import { ResponseFuncs } from "../../../utils/types";
 
+type Movie = {
+  _id: string;
+  title: string;
+  description: string;
+  poster: string;
+  year: number;
+  rating: number;
+  genre: {
+    _id: string;
+    name: string;
+  }[];
+  director: string;
+  actors: {
+    name: string;
+    role: string;
+  }[];
+};
+
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   //capture request method, we type it as a key of ResponseFunc to reduce typing later
   const method: keyof ResponseFuncs = req.method as keyof ResponseFuncs;
@@ -25,29 +43,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   //if the request method is PUT, update the movie
   if (method === "PUT") {
-    const {
-      title,
-      description,
-      image,
-      year,
-      actors,
-      genre,
-      director,
-      favorite,
-      rating,
-    } = req.body;
-    await Movie.findByIdAndUpdate(id, {
-      title,
-      description,
-      image,
-      year,
-      actors,
-      genre,
-      director,
-      favorite,
-      rating,
-    });
-    res.json({ message: "Movie Updated" });
+    const updatedMovie: Movie = req.body;
+    res.json(await Movie.findByIdAndUpdate(id, updatedMovie).catch(catcher));
   }
 
   //if the request method is DELETE, delete the movie

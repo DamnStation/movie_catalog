@@ -1,9 +1,11 @@
+import Image from "next/image";
+
 export default function index() {
   return (
     <div className="hero bg-base-200">
       <div className="hero-content flex-col lg:flex-row-reverse">
         <img
-          src="https://api.lorem.space/image/movie?w=260&h=400"
+          src={"https://api.lorem.space/image/movie?w=260&h=400"}
           className="max-w-sm rounded-lg shadow-2xl"
         />
         <div>
