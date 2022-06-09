@@ -13,25 +13,14 @@ export const connect = async () => {
 
   // Movie SCHEMA
   const MovieSchema = new mongoose.Schema({
-    _id: String,
     title: String,
     description: String,
     poster: String,
     year: Number,
+    actors: String,
+    genre: String,
+    director: String,
     rating: Number,
-    genre: [
-      {
-        _id: String,
-        name: String,
-        director: String,
-      },
-    ],
-    actors: [
-      {
-        name: String,
-        role: String,
-      },
-    ],
   });
 
   // OUR Movie MODEL

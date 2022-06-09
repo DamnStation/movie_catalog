@@ -1,37 +1,43 @@
 import { NextPage } from "next";
 import Head from "next/head";
 import { useEffect, useState } from "react";
-
-type Movie = {
-  _id: string;
-  title: string;
-  description: string;
-  poster: string;
-  year: number;
-  rating: number;
-  genre: {
-    _id: string;
-    name: string;
-  }[];
-  director: string;
-  actors: {
-    name: string;
-    role: string;
-  }[];
-};
+import { Movie } from "../../utils/types";
+import { connect } from "../../utils/connection";
 
 const CreateNewMovieForm: NextPage = () => {
   //POST /api/movies
   const [movies, setMovies] = useState<Movie[]>([]);
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [poster, setPoster] = useState("");
-  const [year, setYear] = useState(0);
-  const [rating, setRating] = useState(0);
-  const [genre, setGenre] = useState("");
-  const [director, setDirector] = useState("");
-  const [actors, setActors] = useState("");
-  //POST /api/movies
+
+  const [title, setTitle] = useState<string>("");
+  const [description, setDescription] = useState<string>("");
+  const [poster, setPoster] = useState<string>("");
+  const [year, setYear] = useState<number>(0);
+  const [rating, setRating] = useState<number>(0);
+  const [genre, setGenre] = useState<string>("");
+  const [director, setDirector] = useState<string>("");
+  const [actors, setActors] = useState<string>("");
+
+  // Fetch POST function
+  const postMovie = async () => {
+    const response = await fetch("/api/movies", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        title,
+        description,
+        poster,
+        year,
+        rating,
+        genre,
+        director,
+        actors,
+      }),
+    });
+    const data = await response.json();
+    setMovies([...movies, data]);
+  };
 
   return (
     <>
@@ -43,144 +49,82 @@ const CreateNewMovieForm: NextPage = () => {
         <div className="flex flex-col items-center justify-center w-full h-full">
           <form
             className="flex flex-col items-center justify-center w-full h-full"
-            onSubmit={(e) => {
-              e.preventDefault();
-              fetch("/api/movies", {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                  title,
-                  description,
-                  poster,
-                  year,
-                  rating,
-                  genre,
-                  director,
-                  actors,
-                }),
-              })
-                .then((res) => res.json())
-                .then((data) => {
-                  setMovies([...movies, data]);
-                  setTitle("");
-                  setDescription("");
-                  setPoster("");
-                  setYear(0);
-                  setRating(0);
-                  setGenre("");
-                  setDirector("");
-                  setActors("");
-                });
-            }}
+            onSubmit={postMovie}
           >
-            <div className="flex flex-col items-center justify-center w-3/4 h-full">
-              <label className="text-center" htmlFor="title">
-                Title:
-              </label>
+            <div className="flex flex-col items-center justify-center w-full h-full">
+              <label className="flex justify-center text-xl">Title</label>
               <input
-                className="w-full h-auto bg-gray-500"
+                className="flex justify-center text-xl"
                 type="text"
-                id="title"
                 value={title}
-                required
                 onChange={(e) => setTitle(e.target.value)}
               />
             </div>
-            <div className="flex flex-col items-center justify-center w-3/4 h-full">
-              <label className="text-center" htmlFor="description">
-                Description:
-              </label>
+            <div className="flex flex-col items-center justify-center w-full h-full">
+              <label className="flex justify-center text-xl">Description</label>
               <input
-                className="w-full h-auto bg-gray-500"
+                className="flex justify-center text-xl"
                 type="text"
-                id="description"
                 value={description}
-                required
                 onChange={(e) => setDescription(e.target.value)}
               />
             </div>
-            <div className="flex flex-col items-center justify-center w-3/4 h-full">
-              <label className="text-center" htmlFor="poster">
-                Poster:
-              </label>
+            <div className="flex flex-col items-center justify-center w-full h-full">
+              <label className="flex justify-center text-xl">Poster</label>
               <input
-                className="w-full h-auto bg-gray-500"
+                className="flex justify-center text-xl"
                 type="text"
-                id="poster"
                 value={poster}
-                required
                 onChange={(e) => setPoster(e.target.value)}
               />
             </div>
-            <div className="flex flex-col items-center justify-center w-3/4 h-full">
-              <label className="text-center" htmlFor="year">
-                Year:
-              </label>
+            <div className="flex flex-col items-center justify-center w-full h-full">
+              <label className="flex justify-center text-xl">Year</label>
               <input
-                className="w-full h-auto bg-gray-500"
-                type="range min=1970 max=2055"
-                id="year"
+                className="flex justify-center text-xl"
+                type="number"
                 value={year}
-                required
                 onChange={(e) => setYear(Number(e.target.value))}
               />
             </div>
-            <div className="flex flex-col items-center justify-center w-3/4 h-full">
-              <label className="text-center" htmlFor="rating">
-                Rating:
-              </label>
+            <div className="flex flex-col items-center justify-center w-full h-full">
+              <label className="flex justify-center text-xl">Rating</label>
               <input
-                className="w-full h-auto bg-gray-500"
-                type="range min=1 max=10"
-                id="rating"
+                className="flex justify-center text-xl"
+                type="number"
                 value={rating}
-                required
                 onChange={(e) => setRating(Number(e.target.value))}
               />
             </div>
-            <div className="flex flex-col items-center justify-center w-3/4 h-full">
-              <label className="text-center" htmlFor="genre">
-                Genre:
-              </label>
+            <div className="flex flex-col items-center justify-center w-full h-full">
+              <label className="flex justify-center text-xl">Genre</label>
               <input
-                className="w-full h-auto bg-gray-500"
+                className="flex justify-center text-xl"
                 type="text"
-                id="genre"
                 value={genre}
-                required
                 onChange={(e) => setGenre(e.target.value)}
               />
             </div>
-            <div className="flex flex-col items-center justify-center w-3/4 h-full">
-              <label className="text-center" htmlFor="director">
-                Director:
-              </label>
+            <div className="flex flex-col items-center justify-center w-full h-full">
+              <label className="flex justify-center text-xl">Director</label>
               <input
-                className="w-full h-auto bg-gray-500"
+                className="flex justify-center text-xl"
                 type="text"
-                id="director"
                 value={director}
-                required
                 onChange={(e) => setDirector(e.target.value)}
               />
             </div>
-            <div className="flex flex-col items-center justify-center w-3/4 h-full">
-              <label className="text-center" htmlFor="actors">
-                Actors:
-              </label>
+            <div className="flex flex-col items-center justify-center w-full h-full">
+              <label className="flex justify-center text-xl">Actors</label>
               <input
-                className="w-full h-auto bg-gray-500"
+                className="flex justify-center text-xl"
                 type="text"
-                id="actors"
                 value={actors}
-                required
                 onChange={(e) => setActors(e.target.value)}
               />
             </div>
-            <div className="flex flex-col items-center justify-center w-3/4 h-full border-4 border-y-2 border-green-800 m-10 ">
-              <button className="w-full h-auto ">Submit</button>
+            <div className="flex flex-col items-center justify-center w-full h-full">
+              <button className="flex justify-center text-xl">Submit</button>
             </div>
           </form>
         </div>

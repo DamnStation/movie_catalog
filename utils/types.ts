@@ -8,13 +8,12 @@ export interface ResponseFuncs {
 
 // Interface to define our Movie model on the frontend
 export interface Movie {
-  title: String;
-  description: String;
-  image: String;
-  year: Number;
-  actors: String;
-  genre: String;
-  director: String;
-  favorite: Boolean;
-  rating: Number;
+  title: string;
+  description: string;
+  poster: string;
+  year: number;
+  actors: string;
+  genre: string;
+  director: string;
+  rating: number;
 }
