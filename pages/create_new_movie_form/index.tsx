@@ -1,8 +1,7 @@
 import { NextPage } from "next";
 import Head from "next/head";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Movie } from "../../utils/types";
-import { connect } from "../../utils/connection";
 
 const CreateNewMovieForm: NextPage = () => {
   //POST /api/movies
@@ -46,6 +45,10 @@ const CreateNewMovieForm: NextPage = () => {
       </Head>
       <div className="w-full h-full  content-center ">
         <h1 className=" flex justify-center text-xl">Create New Movie</h1>
+
+        <p className=" text-center text-2xl text-gray-200">
+          Temp Poster URL: https://api.lorem.space/image/movie?w=260&h=400
+        </p>
         <div className="flex flex-col items-center justify-center w-full h-full">
           <form
             className="flex flex-col items-center justify-center w-full h-full"

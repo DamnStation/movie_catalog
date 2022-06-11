@@ -1,30 +1,18 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { Movie } from "../../utils/types";
 
-type Movie = {
-  _id: string;
-  title: string;
-  description: string;
-  poster: string;
-  year: number;
-  rating: number;
-  genre: {
-    _id: string;
-    name: string;
-  }[];
-  director: string;
-  actors: {
-    name: string;
-    role: string;
-  }[];
-};
 const Movies: NextPage = () => {
   // Get all movies from the database
   const [movies, setMovies] = useState<Movie[]>([]);
 
-  // Fetch all movies from the database
+  const router = useRouter();
+  const { id } = router.query;
+
+  // Fetch async all movies from the database
   useEffect(() => {
     fetch("/api/movies")
       .then((res) => res.json())
@@ -43,29 +31,59 @@ const Movies: NextPage = () => {
       });
   };
 
+  // Edit movie by id
+  const editMovie = (id: string) => {
+    router.push(`/movies/edit/${id}`);
+  };
+
   // Render all movies
   return (
     <>
       <Head>
         <title>Movies</title>
       </Head>
-      <div className="w-full h-full flex content-center ">
-        <h1 className="">Movies</h1>
-        <div className="flex flex-col items-center justify-center w-full h-full">
-          {movies.map((movie) => (
-            <div
-              key={movie._id}
-              className="flex flex-col items-center justify-center w-full h-full"
-            >
-              <div className="flex flex-col items-center justify-center w-full h-full">
-                <img src={movie.poster} alt={movie.title} />
-                <div className="text-center text-4xl ">{movie.poster}</div>
-                <div className="text-center text-4xl ">{movie.title}</div>
-                <div className="text-center text-4xl ">{movie.description}</div>
-                <div className="text-center text-4xl ">{movie.year}</div>
-                <div className="text-center text-4xl ">{movie.rating}</div>
-                <div className="text-center text-4xl ">{movie.director}</div>
-              </div>
+
+      {movies.map((movie) => (
+        <div className="card card-normal bg-base-100 shadow-xl">
+          <figure className="card-body text-center">
+            <img src={movie.poster} alt={movie.title} />
+          </figure>
+          <div className="card-body text-center">
+            <label className="card-subtitle">
+              <h2 className="text-3xl text-gray-200">{movie.title}</h2>
+            </label>
+            <label className="card-subtitle">
+              <div className="text-xl text-gray-300">Description:</div>
+              <p>{movie.description}</p>
+            </label>
+            <label className="card-subtitle">
+              <div className="text-xl text-gray-300">Release date:</div>
+              <p>{movie.year}</p>
+            </label>
+            <label className="card-subtitle">
+              <div className="text-xl text-gray-300">Rating: </div>
+              <p>{movie.rating}</p>
+            </label>
+            <label className="card-subtitle ">
+              <div className="text-xl text-gray-300">Genre: </div>
+              <p>{movie.genre}</p>
+            </label>
+            <label className="card-subtitle ">
+              <div className="text-xl text-gray-300">Director: </div>
+              <p>{movie.director}</p>
+            </label>
+            <label className="card-subtitle ">
+              <div className="text-xl text-gray-300 ">Actors: </div>
+              <p>{movie.actors}</p>
+            </label>
+
+            <div className="card-actions justify-end">
+              <button
+                className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                onClick={() => editMovie(movie._id)}
+              >
+                Edit
+              </button>
               <button
                 className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
                 onClick={() => deleteMovie(movie._id)}
@@ -73,9 +91,9 @@ const Movies: NextPage = () => {
                 Delete
               </button>
             </div>
-          ))}
+          </div>
         </div>
-      </div>
+      ))}
     </>
   );
 };
