@@ -44,7 +44,7 @@ const Movies: NextPage = () => {
       </Head>
 
       {movies.map((movie) => (
-        <div className="card card-normal bg-base-100 shadow-xl">
+        <div key={movie._id} className="card card-normal bg-base-100 shadow-xl">
           <figure className="card-body text-center">
             <img src={movie.poster} alt={movie.title} />
           </figure>
